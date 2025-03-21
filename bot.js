@@ -46,7 +46,7 @@ function createBot() {
         setTimeout(() => {
             console.log('🔄 Reconnecting bot...');
             createBot();
-        }, 5000);
+        }, 30000);
     }
 }
 
