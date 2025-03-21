@@ -1,37 +1,54 @@
 const mineflayer = require('mineflayer');
 
-const bot = mineflayer.createBot({
-    host: "SMP_8Green.aternos.me", // Replace with your Aternos server IP
-    port: 34118, // Default Minecraft port
-    username: "SMP_8Green" // Replace with a bot name
-});
+function createBot() {
+    const bot = mineflayer.createBot({
+        host: 'YOUR_SERVER_IP', // Replace with your Aternos server IP
+        port: YOUR_SERVER_PORT, // Replace with the correct port (default: 25565)
+        username: 'BOT_USERNAME' // Change this to your bot's username
+    });
 
-// Prevent AFK kicks by moving randomly
-function antiAfk() {
-    setInterval(() => {
-        const yaw = Math.random() * Math.PI * 2; // Random direction
-        const pitch = (Math.random() - 0.5) * Math.PI; // Random up/down look
-        bot.look(yaw, pitch, true); // Move head
-        bot.setControlState('jump', true); // Jump randomly
-        setTimeout(() => bot.setControlState('jump', false), 500); // Stop jumping
-    }, 30000); // Every 30 seconds
+    // Log when the bot joins the server
+    bot.on('spawn', () => {
+        console.log('✅ Bot has joined the server!');
+        moveRandomly(); // Start moving to avoid AFK kicks
+    });
+
+    // Reconnect when kicked or disconnected
+    bot.on('kicked', (reason) => {
+        console.log(`❌ Bot was kicked: ${reason}`);
+        reconnect();
+    });
+
+    bot.on('error', (err) => {
+        console.log(`⚠️ Bot error: ${err}`);
+        reconnect();
+    });
+
+    bot.on('end', () => {
+        console.log('🔄 Bot disconnected. Reconnecting in 5 seconds...');
+        reconnect();
+    });
+
+    // Function to make the bot move randomly
+    function moveRandomly() {
+        setInterval(() => {
+            const x = Math.random() * 10 - 5; // Move randomly within 10 blocks
+            const z = Math.random() * 10 - 5;
+            bot.setControlState('forward', true);
+            bot.setControlState('jump', true);
+            setTimeout(() => bot.setControlState('jump', false), 200);
+            bot.lookAt(bot.entity.position.offset(x, 0, z));
+        }, 5000); // Move every 5 seconds
+    }
+
+    // Function to reconnect the bot
+    function reconnect() {
+        setTimeout(() => {
+            console.log('🔄 Reconnecting bot...');
+            createBot();
+        }, 5000);
+    }
 }
 
-bot.on('login', () => {
-    console.log("Bot has joined the server!");
-    antiAfk(); // Start Anti-AFK function
-});
-
-bot.on('chat', (username, message) => {
-    if (username === bot.username) return;
-    bot.chat(`Hello ${username}, you said: '${message}'`);
-});
-
-bot.on('spawn', () => {
-    console.log("Bot is now active!");
-});
-
-bot.on('end', () => {
-    console.log("Bot has been disconnected! Reconnecting...");
-    setTimeout(() => process.exit(1), 5000); // Restart bot after 5 seconds
-});
+// Start the bot
+createBot();
