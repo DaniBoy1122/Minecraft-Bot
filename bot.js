@@ -2,9 +2,9 @@ const mineflayer = require('mineflayer');
 
 function createBot() {
     const bot = mineflayer.createBot({
-        host: 'YOUR_SERVER_IP', // Replace with your Aternos server IP
-        port: YOUR_SERVER_PORT, // Replace with the correct port (default: 25565)
-        username: 'BOT_USERNAME' // Change this to your bot's username
+        host: 'SMP_8Green', // Replace with your Aternos server IP
+        port: 34118, // Replace with the correct port (default: 25565)
+        username: 'SMP_8Green' // Change this to your bot's username
     });
 
     // Log when the bot joins the server
