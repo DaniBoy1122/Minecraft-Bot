@@ -9,7 +9,7 @@ function getOfflineUUID(username) {
 }
 
 // Set bot username and UUID
-const botUsername = 'SMP_8Green_BOT'; // Change this to your bot's name
+const botUsername = 'SMP_8Green_B0T'; // Change this to your bot's name
 const botUUID = '259FA7C3-49B2-483B-8A26-8B7A716B04E7'; // Fixed UUID
 const offlineUUID = getOfflineUUID(botUsername); // If using offline mode
 
