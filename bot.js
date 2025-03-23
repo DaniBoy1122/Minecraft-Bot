@@ -4,7 +4,7 @@ function createBot() {
     const bot = mineflayer.createBot({
         host: 'SMP_8Green.aternos.me', // Your server IP
         port: 34118, // Your server port (default is 25565)
-        username: 'SMP_8Green', // Your bot's username
+        username: 'SMP_8Green_Bot', // Your bot's username
         uuid: '2A00B8AF-7C67-309E-89FF-6F8C709FB038' // Fixed UUID
     });
 
