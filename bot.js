@@ -1,3 +1,4 @@
+node --expose-gc bot.js
 const mineflayer = require('mineflayer');
 
 function createBot() {
@@ -50,5 +51,9 @@ function createBot() {
     }
 }
 
-// Start the bot
-createBot();
+   setInterval(() => {
+    if (global.gc) {
+        global.gc();
+        console.log("Forced garbage collection.");
+    }
+}, 60000); // Runs every 1 minute
