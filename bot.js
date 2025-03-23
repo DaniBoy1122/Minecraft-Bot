@@ -56,3 +56,9 @@ function createBot() {
         console.log("Forced garbage collection.");
     }
 }, 60000); // Runs every 1 minute
+bot.on('kicked', (reason) => {
+    console.log(`⛔ Bot was kicked: ${reason}`);
+});
+bot.on('end', () => {
+    console.log("🔄 Bot disconnected.");
+});
