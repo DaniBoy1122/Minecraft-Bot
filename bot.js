@@ -18,7 +18,7 @@ const bot = createBot({
     host: 'SMP_8Green.aternos.me', // Replace with your server IP
     port: 34118, // Change if using a custom port
     username: botUsername,
-    auth: 'offline', // Use 'microsoft' for official accounts
+    auth: 'microsoft', // Use 'microsoft' for official accounts
     profiles: {
         mojang: {
             uuid: botUUID, // Use fixed UUID
