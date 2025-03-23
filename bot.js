@@ -2,18 +2,19 @@ const mineflayer = require('mineflayer');
 
 function createBot() {
     const bot = mineflayer.createBot({
-        host: 'SMP_8Green.aternos.me', // Replace with your Aternos server IP
-        port: 34118, // Replace with the correct port (default: 25565)
-        username: 'SMP_8Green', // Bot username
-        auth: 'offline', // Set to 'microsoft' if using online mode
+        host: 'SMP_8Green.aternos.me', // Your server IP
+        port: 34118, // Your server port (default is 25565)
+        username: 'SMP_8Green', // Your bot's username
         uuid: '2A00B8AF-7C67-309E-89FF-6F8C709FB038' // Fixed UUID
     });
 
+    // Log when the bot joins the server
     bot.on('spawn', () => {
         console.log('✅ Bot has joined the server!');
-        moveRandomly(); // Start anti-AFK movement
+        moveRandomly(); // Start moving to avoid AFK kicks
     });
 
+    // Prevent duplicate logins
     bot.on('kicked', (reason) => {
         console.log(`❌ Bot was kicked: ${reason}`);
         reconnect();
@@ -25,10 +26,11 @@ function createBot() {
     });
 
     bot.on('end', () => {
-        console.log('🔄 Bot disconnected. Reconnecting in 60 seconds...');
+        console.log('🔄 Bot disconnected. Reconnecting in 120 seconds...');
         reconnect();
     });
 
+    // Move bot randomly to prevent AFK kicks
     function moveRandomly() {
         setInterval(() => {
             const x = Math.random() * 10 - 5;
@@ -40,12 +42,15 @@ function createBot() {
         }, 5000);
     }
 
+    // Function to reconnect the bot after 2 minutes
     function reconnect() {
         setTimeout(() => {
             console.log('🔄 Reconnecting bot...');
             createBot();
-        }, 60000); // Wait 60 seconds to avoid throttling
+        }, 120000); // 2 minutes delay to avoid throttling
     }
 }
 
+// Start the bot
 createBot();
+
