@@ -1,40 +1,42 @@
 const mineflayer = require('mineflayer');
+const { v4: uuidv4 } = require('uuid'); // Import UUID generator
 
 function createBot() {
     const bot = mineflayer.createBot({
-        host: 'SMP_8Green.aternos.me', // Replace with your server IP
-        port: 34118, // Replace with your port (default: 25565)
-        username: 'SMP_8Green' // Change this to your bot's username
+        host: 'SMP_8Green.aternos.me', // Your server IP
+        port: 34118, // Your server port (default: 25565)
+        username: '_DaniWasTaken', // Change to your bot's name
+        auth: 'offline', // Offline mode login
+        fakeUUID: uuidv4() // Assign a unique UUID to prevent duplicate login issues
     });
 
-    // Log when the bot joins
+    // Log when the bot joins the server
     bot.on('spawn', () => {
         console.log('✅ Bot has joined the server!');
-        moveRandomly(); // Start moving to avoid AFK kicks
+        moveRandomly(); // Prevent AFK kicks
     });
 
-    // Handle kicks (Fixed logging)
+    // Handle kicked events
     bot.on('kicked', (reason) => {
-        console.log(`❌ Bot was kicked: ${JSON.stringify(reason, null, 2)}`);
+        console.log(`❌ Bot was kicked: ${reason}`);
         reconnect();
     });
 
-    // Handle errors (Prints detailed error info)
+    // Handle errors
     bot.on('error', (err) => {
-        console.error(`⚠️ Bot error:`, err);
+        console.log(`⚠️ Bot error: ${err}`);
         reconnect();
     });
 
-    // Handle disconnections
+    // Handle disconnection
     bot.on('end', () => {
-        console.log('🔄 Bot disconnected. Reconnecting...');
+        console.log('🔄 Bot disconnected. Reconnecting in 30 seconds...');
         reconnect();
     });
 
-    // Function to make the bot move randomly
+    // Function to move randomly and prevent AFK kicks
     function moveRandomly() {
         setInterval(() => {
-            if (!bot.entity) return; // Ensure bot is still active
             const x = Math.random() * 10 - 5;
             const z = Math.random() * 10 - 5;
             bot.setControlState('forward', true);
@@ -44,21 +46,34 @@ function createBot() {
         }, 5000);
     }
 
-    // Function to reconnect the bot after a delay
+    // Function to kill other bot instances before reconnecting
+    function killOtherInstances() {
+        const { exec } = require('child_process');
+        exec('taskkill /F /IM node.exe', (err, stdout, stderr) => {
+            if (err) {
+                console.error(`⚠️ Error killing other instances: ${err.message}`);
+                return;
+            }
+            console.log('✅ Killed all other bot instances.');
+        });
+    }
+
+    // Function to reconnect the bot
     function reconnect() {
-        const delay = 120000; // 2 minutes (to avoid connection throttling)
-        console.log(`🔄 Reconnecting bot in ${delay / 1000} seconds...`);
-        setTimeout(createBot, delay);
+        setTimeout(() => {
+            console.log('🔄 Reconnecting bot...');
+            killOtherInstances(); // Kill duplicate instances before reconnecting
+            createBot();
+        }, 30000);
     }
 }
 
-// Start the bot
-createBot();
-
-// Optional garbage collection (only if Node.js is run with --expose-gc)
+// Force garbage collection every 1 minute to optimize memory
 setInterval(() => {
     if (global.gc) {
         global.gc();
         console.log("🗑️ Forced garbage collection.");
     }
 }, 60000);
+
+createBot();
