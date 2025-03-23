@@ -5,7 +5,7 @@ function createBot() {
     const bot = mineflayer.createBot({
         host: 'SMP_8Green.aternos.me', // Your server IP
         port: 34118, // Your server port (default: 25565)
-        username: '_DaniWasTaken', // Change to your bot's name
+        username: 'SMP_8Green', // Change to your bot's name
         auth: 'offline', // Offline mode login
         fakeUUID: uuidv4() // Assign a unique UUID to prevent duplicate login issues
     });
