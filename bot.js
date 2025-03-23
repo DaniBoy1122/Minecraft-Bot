@@ -19,13 +19,14 @@ function createBot() {
     });
 
     bot.on('error', (err) => {
-        console.log(`⚠️ Bot error: ${err}`);
-        reconnect();
+    console.log(`⚠️ Bot error: ${err}`);
+    console.log("⏳ Waiting before reconnecting...");
+    setTimeout(createBot, 180000); // 3-minute wait
     });
 
-    bot.on('end', () => {
-        console.log('🔄 Bot disconnected. Reconnecting in 5 seconds...');
-        reconnect();
+   bot.on('end', () => {
+    console.log('🔄 Bot disconnected. Waiting before reconnecting...');
+    setTimeout(createBot, 120000); // 2 minutes
     });
 
     bot.on('message', (message) => {
@@ -63,12 +64,12 @@ function createBot() {
         }, 5000);
     }
 
-    // Function to reconnect the bot
     function reconnect() {
-        setTimeout(() => {
-            console.log('🔄 Reconnecting bot...');
-            createBot();
-        }, 30000);
+    const delay = 120000; // 2 minutes (120,000 ms)
+    console.log(`🔄 Reconnecting bot in ${delay / 1000} seconds...`);
+    setTimeout(createBot, delay);
+    }
+
     }
 }
 
