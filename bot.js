@@ -13,15 +13,15 @@ function createBot() {
         moveRandomly(); // Start moving to avoid AFK kicks
     });
 
-    // Handle kicks
+    // Handle kicks (Fixed logging)
     bot.on('kicked', (reason) => {
-        console.log(`❌ Bot was kicked: ${reason}`);
+        console.log(`❌ Bot was kicked: ${JSON.stringify(reason, null, 2)}`);
         reconnect();
     });
 
-    // Handle errors
+    // Handle errors (Prints detailed error info)
     bot.on('error', (err) => {
-        console.log(`⚠️ Bot error: ${err}`);
+        console.error(`⚠️ Bot error:`, err);
         reconnect();
     });
 
