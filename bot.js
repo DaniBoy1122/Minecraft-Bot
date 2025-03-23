@@ -7,13 +7,12 @@ function createBot() {
         username: 'SMP_8Green' // Change this to your bot's username
     });
 
-    // Log when the bot joins the server
+    // ✅ Make sure all bot events are inside createBot
     bot.on('spawn', () => {
         console.log('✅ Bot has joined the server!');
         moveRandomly(); // Start moving to avoid AFK kicks
     });
 
-    // Reconnect when kicked or disconnected
     bot.on('kicked', (reason) => {
         console.log(`❌ Bot was kicked: ${reason}`);
         reconnect();
@@ -29,16 +28,39 @@ function createBot() {
         reconnect();
     });
 
+    bot.on('message', (message) => {
+        console.log(`💬 Chat: ${message}`);
+    });
+
+    bot.on('login', () => {
+        console.log('🔓 Bot logged in successfully!');
+    });
+
+    bot.on('disconnect', (reason) => {
+        console.log(`⚠️ Bot disconnected: ${reason}`);
+        reconnect();
+    });
+
+    bot.on('error', (err) => {
+        if (err.code === 'ECONNRESET') {
+            console.log('⚠️ Connection reset by server. Reconnecting...');
+        } else {
+            console.log(`⚠️ Bot error: ${err.message}`);
+        }
+        reconnect();
+    });
+
     // Function to make the bot move randomly
     function moveRandomly() {
         setInterval(() => {
-            const x = Math.random() * 10 - 5; // Move randomly within 10 blocks
+            if (!bot.entity) return;
+            const x = Math.random() * 10 - 5;
             const z = Math.random() * 10 - 5;
             bot.setControlState('forward', true);
             bot.setControlState('jump', true);
             setTimeout(() => bot.setControlState('jump', false), 200);
             bot.lookAt(bot.entity.position.offset(x, 0, z));
-        }, 5000); // Move every 5 seconds
+        }, 5000);
     }
 
     // Function to reconnect the bot
@@ -48,15 +70,11 @@ function createBot() {
             createBot();
         }, 30000);
     }
-
-    // Run garbage collection every minute (if supported)
-    setInterval(() => {
-        if (global.gc) {
-            global.gc();
-            console.log("🗑️ Forced garbage collection.");
-        }
-    }, 60000); // Runs every 1 minute
 }
+
+// ✅ Start the bot
+createBot();
+
 
 // ✅ Start the bot
 createBot();
