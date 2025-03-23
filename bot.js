@@ -9,14 +9,14 @@ function getOfflineUUID(username) {
 }
 
 // Set bot username and UUID
-const botUsername = 'YourBotName'; // Change this to your bot's name
-const botUUID = '2A00B8AF-7C67-309E-89FF-6F8C709FB038'; // Fixed UUID
+const botUsername = 'SMP_8Green_BOT'; // Change this to your bot's name
+const botUUID = '259FA7C3-49B2-483B-8A26-8B7A716B04E7'; // Fixed UUID
 const offlineUUID = getOfflineUUID(botUsername); // If using offline mode
 
 // Create the bot
 const bot = createBot({
-    host: 'your.server.ip', // Replace with your server IP
-    port: 25565, // Change if using a custom port
+    host: 'SMP_8Green.aternos.me', // Replace with your server IP
+    port: 34118, // Change if using a custom port
     username: botUsername,
     auth: 'offline', // Use 'microsoft' for official accounts
     profiles: {
