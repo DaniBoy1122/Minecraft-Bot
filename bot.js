@@ -48,17 +48,15 @@ function createBot() {
             createBot();
         }, 30000);
     }
+
+    // Run garbage collection every minute (if supported)
+    setInterval(() => {
+        if (global.gc) {
+            global.gc();
+            console.log("🗑️ Forced garbage collection.");
+        }
+    }, 60000); // Runs every 1 minute
 }
 
-   setInterval(() => {
-    if (global.gc) {
-        global.gc();
-        console.log("Forced garbage collection.");
-    }
-}, 60000); // Runs every 1 minute
-bot.on('kicked', (reason) => {
-    console.log(`⛔ Bot was kicked: ${reason}`);
-});
-bot.on('end', () => {
-    console.log("🔄 Bot disconnected.");
-});
+// ✅ Start the bot
+createBot();
