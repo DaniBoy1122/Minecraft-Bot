@@ -1,4 +1,3 @@
-node --expose-gc bot.js
 const mineflayer = require('mineflayer');
 
 function createBot() {
