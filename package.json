@@ -1,12 +1,13 @@
 {
   "name": "minecraft-bot",
   "version": "1.0.0",
-  "description": "A Minecraft bot to prevent AFK kick.",
+  "description": "A Minecraft bot",
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js"
   },
   "dependencies": {
-    "mineflayer": "^4.4.0"
+    "mineflayer": "^2.40.0",
+    "mineflayer-pathfinder": "^2.0.0"
   }
 }
